@@ -1,0 +1,74 @@
+version: "3"
+services:
+
+  tile38-1:
+    image: tile38/tile38:1.16.4
+    hostname: tile38-1
+    container_name: tile38-1
+    ports:
+      - 9851:9851
+
+  tile38-2:
+    image: tile38/tile38:1.16.4
+    hostname: tile38-2
+    container_name: tile38-2
+    depends_on:
+      - tile38-1
+    ports:
+      - 9852:9851
+
+  tile38-3:
+    image: tile38/tile38:1.16.4
+    hostname: tile38-3
+    container_name: tile38-3
+    depends_on:
+      - tile38-1
+    ports:
+      - 9853:9851
+
+  tile38-3:
+    image: rashadansari/tile38:1.17.6
+    hostname: tile38-3
+    container_name: tile38-3
+    depends_on:
+      - tile38-1
+    environment:
+      - REDIS_SENTINEL_HOST=sentinel-1
+      - REDIS_SENTINEL_PORT_NUMBER=26379
+      - REDIS_SENTINEL_MASTER_NAME=mymaster
+
+  sentinel-1:
+    image: bitnami/redis-sentinel:5.0.5
+    hostname: sentinel-1
+    container_name: sentinel-1
+    depends_on:
+      - tile38-1
+    environment:
+      - REDIS_MASTER_HOST=tile38-1
+      - REDIS_MASTER_PORT_NUMBER=9851
+    ports:
+      - 26379:26379
+
+  sentinel-2:
+    image: bitnami/redis-sentinel:5.0.5
+    hostname: sentinel-2
+    container_name: sentinel-2
+    depends_on:
+      - tile38-1
+    environment:
+      - REDIS_MASTER_HOST=tile38-1
+      - REDIS_MASTER_PORT_NUMBER=9851
+    ports:
+      - 26380:26379
+
+  sentinel-3:
+    image: bitnami/redis-sentinel:5.0.5
+    hostname: sentinel-3
+    container_name: sentinel-3
+    depends_on:
+      - tile38-1
+    environment:
+      - REDIS_MASTER_HOST=tile38-1
+      - REDIS_MASTER_PORT_NUMBER=9851
+    ports:
+      - 26381:26379
