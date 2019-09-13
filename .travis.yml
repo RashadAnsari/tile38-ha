@@ -7,3 +7,5 @@ script:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker build -t rashadansari/tile38:1.17.6 .
   - docker push rashadansari/tile38:1.17.6
+  - docker tag rashadansari/tile38:1.17.6 rashadansari/tile38:latest
+  - docker push rashadansari/tile38:latest
