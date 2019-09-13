@@ -16,6 +16,12 @@ WORKDIR tile38
 COPY run.sh run.sh
 
 RUN chown -R 1001:1001 /tile38
+RUN touch /.liner_example_history
+RUN chown -R 1001:1001 /.liner_example_history
+
+# VOLUME /tile38/data
+
+EXPOSE 9851
 
 USER 1001
 CMD [ "./run.sh" ]

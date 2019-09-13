@@ -2,29 +2,29 @@ version: "3"
 services:
 
   tile38-1:
-    image: tile38/tile38:1.16.4
+    image: rashadansari/tile38:1.17.6
     hostname: tile38-1
     container_name: tile38-1
-    ports:
-      - 9851:9851
+    environment:
+      - TILE38_REPLICATION_ENABLED=true
+      - REDIS_SENTINEL_HOST=sentinel-1
+      - REDIS_SENTINEL_PORT_NUMBER=26379
+      - REDIS_SENTINEL_MASTER_NAME=mymaster
 
   tile38-2:
-    image: tile38/tile38:1.16.4
+    image: rashadansari/tile38:1.17.6
     hostname: tile38-2
     container_name: tile38-2
     depends_on:
       - tile38-1
-    ports:
-      - 9852:9851
-
-  tile38-3:
-    image: tile38/tile38:1.16.4
-    hostname: tile38-3
-    container_name: tile38-3
-    depends_on:
-      - tile38-1
-    ports:
-      - 9853:9851
+      - sentinel-1
+      - sentinel-2
+      - sentinel-3
+    environment:
+      - TILE38_REPLICATION_ENABLED=true
+      - REDIS_SENTINEL_HOST=sentinel-1
+      - REDIS_SENTINEL_PORT_NUMBER=26379
+      - REDIS_SENTINEL_MASTER_NAME=mymaster
 
   tile38-3:
     image: rashadansari/tile38:1.17.6
@@ -32,7 +32,11 @@ services:
     container_name: tile38-3
     depends_on:
       - tile38-1
+      - sentinel-1
+      - sentinel-2
+      - sentinel-3
     environment:
+      - TILE38_REPLICATION_ENABLED=true
       - REDIS_SENTINEL_HOST=sentinel-1
       - REDIS_SENTINEL_PORT_NUMBER=26379
       - REDIS_SENTINEL_MASTER_NAME=mymaster
