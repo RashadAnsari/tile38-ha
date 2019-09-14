@@ -10,6 +10,8 @@ services:
       - REDIS_SENTINEL_HOST=sentinel-1
       - REDIS_SENTINEL_PORT_NUMBER=26379
       - REDIS_SENTINEL_MASTER_NAME=mymaster
+    ports:
+      - 9851:9851
 
   tile38-2:
     image: rashadansari/tile38:1.17.6
@@ -25,6 +27,8 @@ services:
       - REDIS_SENTINEL_HOST=sentinel-1
       - REDIS_SENTINEL_PORT_NUMBER=26379
       - REDIS_SENTINEL_MASTER_NAME=mymaster
+    ports:
+      - 9852:9851
 
   tile38-3:
     image: rashadansari/tile38:1.17.6
@@ -40,6 +44,8 @@ services:
       - REDIS_SENTINEL_HOST=sentinel-1
       - REDIS_SENTINEL_PORT_NUMBER=26379
       - REDIS_SENTINEL_MASTER_NAME=mymaster
+    ports:
+      - 9853:9851
 
   sentinel-1:
     image: bitnami/redis-sentinel:5.0.5
