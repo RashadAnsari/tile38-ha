@@ -1,3 +1,4 @@
+#!/bin/bash
 if [ ${TILE38_REPLICATION_ENABLED} = "true" ]; then
     FIND_MASTER_CMD="redis-cli -h "${REDIS_SENTINEL_HOST}" -p "${REDIS_SENTINEL_PORT_NUMBER}" sentinel get-master-addr-by-name "${REDIS_SENTINEL_MASTER_NAME}""
     REDIS_SENTINEL_INFO="$(${FIND_MASTER_CMD})"
