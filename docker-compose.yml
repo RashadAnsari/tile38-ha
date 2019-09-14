@@ -10,8 +10,8 @@ services:
       - REDIS_SENTINEL_HOST=sentinel-1
       - REDIS_SENTINEL_PORT_NUMBER=26379
       - REDIS_SENTINEL_MASTER_NAME=mymaster
-    ports:
-      - 9851:9851
+    # ports:
+    #   - 9851:9851
 
   tile38-2:
     image: rashadansari/tile38:1.17.6
@@ -27,8 +27,8 @@ services:
       - REDIS_SENTINEL_HOST=sentinel-1
       - REDIS_SENTINEL_PORT_NUMBER=26379
       - REDIS_SENTINEL_MASTER_NAME=mymaster
-    ports:
-      - 9852:9851
+    # ports:
+    #   - 9852:9851
 
   tile38-3:
     image: rashadansari/tile38:1.17.6
@@ -44,8 +44,8 @@ services:
       - REDIS_SENTINEL_HOST=sentinel-1
       - REDIS_SENTINEL_PORT_NUMBER=26379
       - REDIS_SENTINEL_MASTER_NAME=mymaster
-    ports:
-      - 9853:9851
+    # ports:
+    #   - 9853:9851
 
   sentinel-1:
     image: bitnami/redis-sentinel:5.0.5
@@ -56,8 +56,8 @@ services:
     environment:
       - REDIS_MASTER_HOST=tile38-1
       - REDIS_MASTER_PORT_NUMBER=9851
-    ports:
-      - 26379:26379
+    # ports:
+    #   - 26379:26379
 
   sentinel-2:
     image: bitnami/redis-sentinel:5.0.5
@@ -68,8 +68,8 @@ services:
     environment:
       - REDIS_MASTER_HOST=tile38-1
       - REDIS_MASTER_PORT_NUMBER=9851
-    ports:
-      - 26380:26379
+    # ports:
+    #   - 26380:26379
 
   sentinel-3:
     image: bitnami/redis-sentinel:5.0.5
@@ -80,5 +80,19 @@ services:
     environment:
       - REDIS_MASTER_HOST=tile38-1
       - REDIS_MASTER_PORT_NUMBER=9851
+    # ports:
+    #   - 26381:26379
+
+  haproxy:
+    image: haproxy:1.9.9
+    hostname: haproxy
+    container_name: haproxy
+    depends_on:
+      - tile38-1
+      - tile38-2
+      - tile38-3
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
     ports:
-      - 26381:26379
+      - 1986:1986
+      - 9851:9851
