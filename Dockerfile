@@ -9,6 +9,7 @@ RUN curl -L  https://github.com/tidwall/tile38/releases/download/${TILE38_VERSIO
     rm -rf tile38-${TILE38_VERSION}-linux-amd64.tar.gz
 
 RUN apt-get update && \
+    apt-get install wget && \
     apt-get --assume-yes install redis-tools
 
 WORKDIR tile38
