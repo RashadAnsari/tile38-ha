@@ -17,6 +17,8 @@ WORKDIR tile38
 COPY run.sh run.sh
 
 RUN chown -R 1001:1001 /tile38
+RUN mkdir -p data
+RUN chown -R 1001:1001 /tile38/data
 RUN touch /.liner_example_history
 RUN chown -R 1001:1001 /.liner_example_history
 
