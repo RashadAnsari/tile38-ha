@@ -16,6 +16,7 @@ WORKDIR tile38
 
 COPY run.sh run.sh
 
+RUN addgroup -S tile38 && adduser -S tile38 -G tile38
 RUN chown -R tile38:tile38 .
 
 RUN touch /.liner_example_history
