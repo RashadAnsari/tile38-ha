@@ -16,11 +16,10 @@ WORKDIR tile38
 
 COPY run.sh run.sh
 
-RUN addgroup -S tile38 && adduser -S tile38 -G tile38
-RUN chown -R tile38:tile38 .
-
-RUN touch /.liner_example_history
-RUN chown -R tile38:tile38 /.liner_example_history
+RUN adduser tile38 && \
+    chown -R tile38:tile38 . && \
+    touch /.liner_example_history && \
+    chown -R tile38:tile38 /.liner_example_history
 
 # VOLUME /tile38/data
 
