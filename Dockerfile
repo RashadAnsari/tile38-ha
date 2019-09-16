@@ -1,5 +1,5 @@
 FROM bitnami/minideb-extras:stretch
-LABEL maintainer "Rashad Ansari <rashad.ansari1996@gmail.com>"
+LABEL maintainer="Rashad Ansari <rashad.ansari1996@gmail.com>"
 
 ARG TILE38_VERSION=1.17.6
 
@@ -16,10 +16,14 @@ WORKDIR tile38
 
 COPY run.sh run.sh
 
-RUN adduser tile38 && \
-    chown -R tile38:tile38 . && \
+RUN \
+    chgrp -R 0 /tile38 && \
+    chmod -R g=u /tile38
+
+RUN \
     touch /.liner_example_history && \
-    chown -R tile38:tile38 /.liner_example_history
+    chgrp -R 0 /.liner_example_history && \
+    chmod -R g=u /.liner_example_history
 
 # VOLUME /tile38/data
 
