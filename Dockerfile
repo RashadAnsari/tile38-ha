@@ -16,9 +16,10 @@ WORKDIR tile38
 
 COPY run.sh run.sh
 
-RUN chown -R 1001:1001 /tile38
-RUN mkdir -p data
-RUN chown -R 1001:1001 /tile38/data
+RUN addgroup -S tile38 && \
+    adduser -S -G tile38 tile38 && \
+    chown -R tile38:tile38 /tile38
+
 RUN touch /.liner_example_history
 RUN chown -R 1001:1001 /.liner_example_history
 
@@ -26,5 +27,5 @@ RUN chown -R 1001:1001 /.liner_example_history
 
 EXPOSE 9851
 
-USER 1001
+USER tile38
 CMD [ "./run.sh" ]

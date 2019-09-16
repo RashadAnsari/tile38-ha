@@ -7,11 +7,12 @@ if [ ${TILE38_REPLICATION_ENABLED} = "true" ]; then
         TILE38_MASTER_PORT_NUMBER=$(echo "${REDIS_SENTINEL_INFO}" | head -2 | tail -1)
         wget ${TILE38_MASTER_HOST}:${TILE38_MASTER_PORT_NUMBER}/ping
         if [ $? -eq 0 ]; then
-             mkdir -p data
-            # echo "{
-            #         \"follow_host\": \"${TILE38_MASTER_HOST}\",
-            #         \"follow_port\": ${TILE38_MASTER_PORT_NUMBER}
-            #     }" > data/config
+#             mkdir -p data
+#             echo "{
+#                     \"follow_host\": \"${TILE38_MASTER_HOST}\",
+#                     \"follow_port\": ${TILE38_MASTER_PORT_NUMBER}
+#                 }" > data/config
+#            ./tile38-server -d ./data
             echo "Starting Tile38 with slave role!"
             ./tile38-server -d ./data &
             TILE38_PID=$(echo $!)
