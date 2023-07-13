@@ -1,7 +1,7 @@
 FROM bitnami/minideb-extras:stretch
 LABEL maintainer="Rashad Ansari <rashad.ansari1996@gmail.com>"
 
-ARG TILE38_VERSION=1.17.6
+ARG TILE38_VERSION
 
 RUN curl -L  https://github.com/tidwall/tile38/releases/download/${TILE38_VERSION}/tile38-${TILE38_VERSION}-linux-amd64.tar.gz -o tile38-${TILE38_VERSION}-linux-amd64.tar.gz && \
     tar xzvf tile38-${TILE38_VERSION}-linux-amd64.tar.gz && \
