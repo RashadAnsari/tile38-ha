@@ -1,18 +1,21 @@
-FROM bitnami/minideb-extras:stretch
+FROM debian:trixie-slim
 LABEL maintainer="Rashad Ansari <rashad.ansari1996@gmail.com>"
 
 ARG TILE38_VERSION
-
-RUN curl -L  https://github.com/tidwall/tile38/releases/download/${TILE38_VERSION}/tile38-${TILE38_VERSION}-linux-amd64.tar.gz -o tile38-${TILE38_VERSION}-linux-amd64.tar.gz && \
-    tar xzvf tile38-${TILE38_VERSION}-linux-amd64.tar.gz && \
-    mv tile38-${TILE38_VERSION}-linux-amd64 tile38 && \
-    rm -rf tile38-${TILE38_VERSION}-linux-amd64.tar.gz
+# Set by BuildKit to the platform being built (amd64, arm64, ...).
+ARG TARGETARCH
 
 RUN apt-get update && \
-    apt-get install wget && \
-    apt-get --assume-yes install redis-tools
+    apt-get install -y --no-install-recommends ca-certificates curl wget redis-tools && \
+    rm -rf /var/lib/apt/lists/*
 
-WORKDIR tile38
+RUN curl -fsSL https://github.com/tidwall/tile38/releases/download/${TILE38_VERSION}/tile38-${TILE38_VERSION}-linux-${TARGETARCH}.tar.gz | tar xz && \
+    mv tile38-${TILE38_VERSION}-linux-${TARGETARCH} /tile38
+
+# Group 0 ownership lets the image run under an arbitrary UID (e.g. OpenShift).
+RUN useradd --system --gid 0 --home-dir /tile38 tile38
+
+WORKDIR /tile38
 
 COPY run.sh run.sh
 
@@ -24,8 +27,6 @@ RUN \
     touch /.liner_example_history && \
     chgrp -R 0 /.liner_example_history && \
     chmod -R g=u /.liner_example_history
-
-# VOLUME /tile38/data
 
 EXPOSE 9851
 
